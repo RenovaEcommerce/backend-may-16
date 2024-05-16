@@ -7,6 +7,8 @@ import { Perk } from './perk.schema'; // Make sure to import Perk schema
 export class Location extends Document {
   @Prop({ required: true })
   title: string;
+  @Prop({ required: true })
+  description: string;
 
   @Prop({ required: true })
   h1: string;

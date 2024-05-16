@@ -24,7 +24,7 @@ export class ServiceSub extends Document {
       h1: String,
       heroH2: String,
       heroP: String,
-      heroImageAlt: String
+      heroImageAlt: String,
     },
   })
   hero: {
@@ -40,6 +40,8 @@ export class ServiceSub extends Document {
       image1: String,
       image1alt: String,
       image2: String,
+      priceLine1: String,
+      priceLine2: String,
       image2alt: String,
       sectionH2: String,
       sectionP1: String,
@@ -58,6 +60,8 @@ export class ServiceSub extends Document {
   about: {
     image1: string;
     image1alt: string;
+    priceLine1: string;
+    priceLine2: string;
     image2: string;
     image2alt: string;
     sectionH2: string;
@@ -78,9 +82,9 @@ export class ServiceSub extends Document {
         description: {
           p1: String,
           p2: String,
-          p3: String
+          p3: String,
         },
-        imagePath: String
+        imagePath: String,
       },
     ],
   })
