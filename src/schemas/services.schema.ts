@@ -40,6 +40,8 @@ export class Services extends Document {
       image1: String,
       image1alt: String,
       image2: String,
+      priceLine1: String,
+      priceLine2: String,
       image2alt: String,
       sectionH2: String,
       sectionP1: String,
@@ -59,6 +61,8 @@ export class Services extends Document {
     image1: string;
     image1alt: string;
     image2: string;
+    priceLine1: string,
+    priceLine2: string,
     image2alt: string;
     sectionH2: string;
     sectionP1: string;
@@ -131,6 +135,8 @@ export class Services extends Document {
 
   @Prop({ required: true })
   markdown: string;
+  @Prop({ required: true })
+  markdown1: string;
 }
 
 export const ServicesSchema = SchemaFactory.createForClass(Services);
