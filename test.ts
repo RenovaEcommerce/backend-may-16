@@ -18,88 +18,48 @@ import { CreateTileDto } from 'src/dto/create-tile-.dto';
 import { CreateTilesDto } from 'src/dto/create-multi-tiles.dto';
 import { Product } from 'src/schemas/products.schema';
 import { CreateProductsDto } from 'src/dto/products.dto';
-import { Laminates } from 'src/schemas/laminates.schema';
-import { Doors } from 'src/schemas/doors.schema';
-import { Sinks } from 'src/schemas/sinks.schema';
-import { Faucets } from 'src/schemas/faucets.schema';
 
 @Injectable()
 export class ProductsService {
   private modelMap: { [key: string]: Model<any> };
 
-  // selectedCategoryData;
+  selectedCategoryData;
   constructor(
-    @InjectModel(Carpets.name, 'productsDb') private carpetsModel: Model<any>,
-    @InjectModel(Hardwoods.name, 'productsDb') private hardwoodsModel: Model<any>,
-    @InjectModel(Vinyls.name, 'productsDb') private vinylsModel: Model<any>,
-    @InjectModel(Laminates.name, 'productsDb') private laminatesModel: Model<any>,
-    @InjectModel(Tiles.name, 'productsDb') private tilesModel: Model<any>,
-    @InjectModel(Countertops.name, 'productsDb') private countertopsModel: Model<any>,
-    @InjectModel(Doors.name, 'productsDb') private doorsModel: Model<any>,
-    @InjectModel(Sinks.name, 'productsDb') private sinksModel: Model<any>,
-    @InjectModel(Faucets.name, 'productsDb') private faucetsModel: Model<any>,
-    @InjectModel(Vanities.name, 'productsDb') private vanitiesModel: Model<any>,
-    @InjectModel(TopProduct.name, 'productsDb') private topProductModel: Model<any>,
+    @InjectModel(Tiles.name, 'productsDb') private tileModel: Model<Tiles>,
+    @InjectModel(Countertops.name, 'productsDb') private countertopModel: Model<Countertops>,
+    @InjectModel(Vanities.name, 'productsDb') private cabinetModel: Model<Vanities>,
+    @InjectModel(TopProduct.name, 'productsDb') private topProductModel: Model<TopProduct>,
+    @InjectModel(Carpets.name, 'productsDb') private carpetModel: Model<Carpets>,
+    @InjectModel(Hardwoods.name, 'productsDb') private hardwoodModel: Model<Hardwoods>,
+    @InjectModel(Vinyls.name, 'productsDb') private vinylModel: Model<Vinyls>,
     @InjectModel(Product.name, 'productsDb') private productlModel: Model<Product>,
 
   ) {
     this.modelMap = {
-      carpets: this.carpetsModel,
-      hardwoods: this.hardwoodsModel,
-      vinyls: this.vinylsModel,
-      laminates: this.laminatesModel,
-      tiles: this.tilesModel,
-      countertops: this.countertopsModel,
-      doors: this.doorsModel,
-      sinks: this.sinksModel,
-      faucets: this.faucetsModel,
-      vanities: this.vanitiesModel,
+      countertops: this.countertopModel,
+      tile: this.tileModel,
+      cabinets: this.cabinetModel,
+      carpets: this.carpetModel
     };
   }
 
-  private getModel(modelName: string): Model<any> {
-    switch (modelName.toLowerCase()) {
-      case 'carpets':
-        return this.carpetsModel;
-      case 'hardwoods':
-        return this.hardwoodsModel;
-      case 'vinyls':
-        return this.vinylsModel;
-      case 'laminates':
-        return this.laminatesModel;
-      case 'tiles':
-        return this.tilesModel;
-      case 'countertops':
-        return this.countertopsModel;
-      case 'doors':
-        return this.doorsModel;
-      case 'sinks':
-        return this.sinksModel;
-      case 'faucets':
-        return this.faucetsModel;
-      case 'vanities':
-        return this.vanitiesModel;
-      default:
-        throw new Error(`Unknown model name: ${modelName}`);
-    }
-  }
   async findAll(query?: ExpressQuery): Promise<{ data: any[], totalCount: number }> {
     const page = parseInt(query.page as string) || 1;
     const limit = parseInt(query.limit as string) || 8;
     const skip = (page - 1) * limit;
 
-    const tile = await this.tilesModel.find().skip(skip).limit(limit).exec();
-    const countertop = await this.countertopsModel
+    const tile = await this.tileModel.find().skip(skip).limit(limit).exec();
+    const countertop = await this.countertopModel
       .find()
       .skip(skip)
       .limit(limit)
       .exec();
-    const cabinet = await this.vanitiesModel
+    const cabinet = await this.cabinetModel
       .find()
       .skip(skip)
       .limit(limit)
       .exec();
-    const carpet = await this.carpetsModel
+    const carpet = await this.carpetModel
       .find()
       .skip(skip)
       .limit(limit)
@@ -108,10 +68,10 @@ export class ProductsService {
     // Объединяем результаты в один массив
     const combinedProducts = [...cabinet, ...countertop, ...tile, ...carpet].sort(() => Math.random() - 0.5)
     const totalCounts = await Promise.all([
-      this.tilesModel.countDocuments().exec(),
-      this.countertopsModel.countDocuments().exec(),
-      this.vanitiesModel.countDocuments().exec(),
-      this.carpetsModel.countDocuments().exec()
+      this.tileModel.countDocuments().exec(),
+      this.countertopModel.countDocuments().exec(),
+      this.cabinetModel.countDocuments().exec(),
+      this.carpetModel.countDocuments().exec()
     ]);
 
     // Sum up all counts
@@ -122,7 +82,7 @@ export class ProductsService {
 
 
   async findCanadianProducts(): Promise<Tiles[]> {
-    return await this.tilesModel.find({ canada: true }).exec();
+    return await this.tileModel.find({ canada: true }).exec();
   }
 
   async findAllProductsByCategory(
@@ -135,17 +95,17 @@ export class ProductsService {
 
     let model;
     switch (category.toLowerCase()) {
-      case 'tiles':
-        model = this.tilesModel;
+      case 'tile':
+        model = this.tileModel;
         break;
       case 'countertops':
-        model = this.countertopsModel;
+        model = this.countertopModel;
         break;
-      case 'vanities':
-        model = this.vanitiesModel;
+      case 'cabinets':
+        model = this.cabinetModel;
         break;
       case 'carpets':
-        model = this.carpetsModel;
+        model = this.carpetModel;
         break;
       default:
         // В случае если категория не соответствует, возможно стоит выбросить ошибку или вернуть пустой результат
@@ -181,17 +141,17 @@ export class ProductsService {
 
     let model;
     switch (category.toLowerCase()) {
-      case 'tiles':
-        model = this.tilesModel;
+      case 'tile':
+        model = this.tileModel;
         break;
       case 'countertops':
-        model = this.countertopsModel;
+        model = this.countertopModel;
         break;
-      case 'vanities':
-        model = this.vanitiesModel;
+      case 'cabinets':
+        model = this.cabinetModel;
         break;
       case 'carpets':
-        model = this.carpetsModel;
+        model = this.carpetModel;
         break;
       default:
         return { data: [], totalCount: 0 };
@@ -237,29 +197,30 @@ export class ProductsService {
   }
 
   async createCarpet(createCarpetDto: CreateCarpetDto): Promise<Carpets> {
-    const createdCarpet = new this.carpetsModel(createCarpetDto);
+    const createdCarpet = new this.carpetModel(createCarpetDto);
     return await createdCarpet.save();
   }
 
   async createHardwood(createHardwoodDto: CreateHardwoodDto): Promise<Hardwoods> {
-    const createdHardwood = new this.hardwoodsModel(createHardwoodDto);
+    const createdHardwood = new this.hardwoodModel(createHardwoodDto);
     return await createdHardwood.save();
   }
 
   async createVinyl(createVinylDto: CreateVinylDto): Promise<Vinyls> {
-    const createdvinyl = new this.vinylsModel(createVinylDto);
+    const createdvinyl = new this.vinylModel(createVinylDto);
     return await createdvinyl.save();
   }
+  
 
-
- async createProducts(modelName: string, createProductsDto: any): Promise<any[]> {
-    const model = this.getModel(modelName);
-    if (createProductsDto?.length > 1) {
-      return await model.insertMany(createProductsDto);
-    } else {
-      const createdProduct = new model(createProductsDto[0]);
-      await createdProduct.save();
-      return [createdProduct];
+  async createProducts(createProductsDto: CreateProductsDto): Promise<Tiles[]> {
+    console.log(createProductsDto, 'jell')
+    return
+    if (createProductsDto?.products?.length > 1) {
+      return await this.tileModel.insertMany(createProductsDto.products);
+    } else  {
+      const createdTile = new this.tileModel(createProductsDto[0]);
+      await createdTile.save();
+      return [createdTile];
     }
   }
 
@@ -276,7 +237,7 @@ export class ProductsService {
       const createdCarpetData = response.data;
 
       // Optionally, you can use the response data to create a local record
-      const createdCarpet = new this.carpetsModel(createdCarpetData);
+      const createdCarpet = new this.carpetModel(createdCarpetData);
       return await createdCarpet.save();
     } catch (error) {
       // Handle errors appropriately

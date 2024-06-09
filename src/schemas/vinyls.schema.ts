@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CountertopsDocument = Countertops & Document;
+export type VinylsDocument = Vinyls & Document;
 
 @Schema()
-export class Countertops {
+export class Vinyls {
   @Prop({ default: null })
   meta_description: string;
 
@@ -42,4 +42,4 @@ export class Countertops {
   variants: { color_name: string; image_url: string }[];
 }
 
-export const CountertopsSchema = SchemaFactory.createForClass(Countertops);
+export const VinylsSchema = SchemaFactory.createForClass(Vinyls);

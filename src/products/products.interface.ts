@@ -1,6 +1,6 @@
-import { Cabinet } from "src/schemas/cabinet.schema";
-import { Carpet } from "src/schemas/carpet.schema";
-import { Countertop } from "src/schemas/countertops.schema";
-import { Tile } from "src/schemas/tile.schema";
+// import { Vanities } from "src/schemas/vanities.schema";
+// import { Carpets } from "src/schemas/carpet.schema";
+// import { Countertops } from "src/schemas/countertops.schema";
+// import { Tiles } from "src/schemas/tiles.schema";
 
-export type AllProductsType = (Tile | Countertop | Cabinet | Carpet)[];
+// export type AllProductsType = (Tiles | Countertops | Vanities | Carpets)[];
