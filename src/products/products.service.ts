@@ -285,6 +285,12 @@ export class ProductsService {
     }
   }
 
+  async findAllUids(category: string) {
+    const model = this.getModel(category);
+    const uids = await model.find({}, { uid: 1, _id: 0 }); // Project only the uid field
+    return uids.map(doc => doc.uid); // Extract uid values from the documents and return as a flat array
+  }
+
   async findTopProducts(category: string) {
     const topProducts = await this.topProductModel.find({ 'type': category }).exec()
     return topProducts;

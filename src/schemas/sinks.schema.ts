@@ -26,7 +26,7 @@ export class Sinks {
   @Prop({ default: null })
   price: number;
 
-  @Prop({ default: null })
+  @Prop({ default: 0 })
   stock: number;
 
   @Prop({ default: null })

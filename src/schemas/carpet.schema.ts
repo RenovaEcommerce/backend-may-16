@@ -21,12 +21,18 @@ export class Carpets {
   model: string;
 
   @Prop({ default: null })
+  brand: string;
+
+  @Prop({ default: null })
+  uid: string;
+
+  @Prop({ default: null })
   name: string;
 
-  @Prop({ default: null })
-  price: string;
+  @Prop({ default: 0.0 })
+  price: number;
 
-  @Prop({ default: null })
+  @Prop({ default: 0 })
   stock: number;
 
   @Prop({ default: null })

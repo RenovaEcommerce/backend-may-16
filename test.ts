@@ -212,17 +212,7 @@ export class ProductsService {
   }
   
 
-  async createProducts(createProductsDto: CreateProductsDto): Promise<Tiles[]> {
-    console.log(createProductsDto, 'jell')
-    return
-    if (createProductsDto?.products?.length > 1) {
-      return await this.tileModel.insertMany(createProductsDto.products);
-    } else  {
-      const createdTile = new this.tileModel(createProductsDto[0]);
-      await createdTile.save();
-      return [createdTile];
-    }
-  }
+ 
 
   async getCarpet() {
     try {
