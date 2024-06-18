@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
 
 export type VinylsDocument = Vinyls & Document;
 
@@ -26,8 +26,8 @@ export class Vinyls {
   @Prop({ default: null })
   uid: string;
 
-  @Prop({ default: null })
-  name: string;
+  @Prop({ type: SchemaTypes.Mixed, default: null })
+  sepcifications: Record<string, any>;
 
   @Prop({ default: 0.0 })
   price: number;
@@ -38,8 +38,8 @@ export class Vinyls {
   @Prop({ default: null })
   description: string;
 
-  @Prop({ default: null })
-  details: string;
+  @Prop({ type: SchemaTypes.Mixed, default: null })
+  details: Record<string, any>; // This allows `details` to be any object
 
   @Prop({ type: [String], default: null })
   images: string[];

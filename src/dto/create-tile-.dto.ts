@@ -1,4 +1,4 @@
-import { IsString, IsArray, IsNotEmpty, ArrayNotEmpty } from 'class-validator';
+import { IsString, IsArray, IsNotEmpty, ArrayNotEmpty, IsObject } from 'class-validator';
 
 export class CreateTileDto {
   @IsString()
@@ -28,8 +28,8 @@ export class CreateTileDto {
   @IsString()
   description: string;
 
-  @IsString()
-  details: string;
+  @IsObject()
+  details: object;
 
   @IsArray()
   @IsString({ each: true })

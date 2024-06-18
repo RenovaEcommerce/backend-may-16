@@ -24,6 +24,15 @@ export class ProductsLinks extends Document {
 
   @Prop({ type: [String], required: true })
   vanities: string[];
+
+  @Prop({ type: [String], required: true })
+  doors: string[];
+
+  @Prop({ type: [String], required: true })
+  countertops: string[];
+
+  @Prop({ type: [String], required: true })
+  laminates: string[];
 }
 
 export const ProductsLinksSchema = SchemaFactory.createForClass(ProductsLinks);

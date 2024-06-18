@@ -27,15 +27,15 @@ export class ProductsLinksService {
         }
         return productsLinks[category];
     }
-  
+
     async update(category: string, urls: string[]): Promise<string[]> {
         let productsLinks = await this.productsLinksModel.findOne().exec();
-    
+
         // If no document found, create a new one
         if (!productsLinks) {
             productsLinks = new this.productsLinksModel();
         }
-    
+
         switch (category) {
             case 'carpets':
                 productsLinks.carpets = urls;
@@ -58,10 +58,21 @@ export class ProductsLinksService {
             case 'vanities':
                 productsLinks.vanities = urls;
                 break;
+            case 'countertops':
+                productsLinks.countertops = urls;
+                break;
+
+            case 'doors':
+                productsLinks.doors = urls;
+                break;
+
+            case 'laminates':
+                productsLinks.laminates = urls;
+                break;
             default:
                 throw new NotFoundException(`Category ${category} not found`);
         }
-    
+
         await productsLinks.save();
         return urls; // Return only the updated array of URLs
     }
