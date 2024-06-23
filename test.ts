@@ -9,10 +9,7 @@ import { TopProduct } from 'src/schemas/topProducts.schema';
 import { Carpets } from 'src/schemas/carpet.schema';
 import { Hardwoods } from 'src/schemas/hardwoods.schema';
 import { Vinyls } from 'src/schemas/vinyls.schema';
-import { CreateCarpetDto } from 'src/dto/create-carpet.dto';
 import axios from 'axios';
-import { CreateHardwoodDto } from 'src/dto/create-hardwood.dto';
-import { CreateVinylDto } from 'src/dto/create-vinyl.dto';
 
 @Injectable()
 export class ProductsService {
@@ -188,23 +185,7 @@ export class ProductsService {
       throw new Error('Error searching for products');
     }
   }
-
-  async createCarpet(createCarpetDto: CreateCarpetDto): Promise<Carpets> {
-    const createdCarpet = new this.carpetModel(createCarpetDto);
-    return await createdCarpet.save();
-  }
-
-  async createHardwood(createHardwoodDto: CreateHardwoodDto): Promise<Hardwoods> {
-    const createdHardwood = new this.hardwoodModel(createHardwoodDto);
-    return await createdHardwood.save();
-  }
-
-  async createVinyl(createVinylDto: CreateVinylDto): Promise<Vinyls> {
-    const createdvinyl = new this.vinylModel(createVinylDto);
-    return await createdvinyl.save();
-  }
   
-
  
 
   async getCarpet() {
