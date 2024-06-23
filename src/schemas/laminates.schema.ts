@@ -27,7 +27,7 @@ export class Laminates {
   uid: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
-  sepcifications: Record<string, any>;
+  specifications: Record<string, any>;
 
   @Prop({ default: 0.0 })
   price: number;
@@ -35,17 +35,14 @@ export class Laminates {
   @Prop({ default: 0 })
   stock: number;
 
-  @Prop({ default: null })
-  description: string;
-
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object
 
   @Prop({ type: [String], default: null })
   images: string[];
 
-  @Prop({ type: [{ color_name: String, image_url: String }], default: null })
-  variants: { color_name: string; image_url: string }[];
+  @Prop({ type: SchemaTypes.Mixed, default: {} })
+  variants: Record<string, any[]>;
 }
 
 export const LaminatesSchema = SchemaFactory.createForClass(Laminates);

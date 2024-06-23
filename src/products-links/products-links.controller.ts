@@ -24,10 +24,10 @@ export class ProductsLinksController {
 
 
     @Put('/get-urls')
-    async update(@Body() data: { category: string, no: number }, @Res() res: Response): Promise<void> {
-        const { category, no } = data;
+    async update(@Body() data: { category: string, min: number, max:number }, @Res() res: Response): Promise<void> {
+        const { category, min, max } = data;
         try {
-            const products = await axios.post('http://localhost:8000/page-products-links', { no, category });
+            const products = await axios.post('http://localhost:8000/page-products-links', { min, max, category });
             if (products.status !== 200) {
                 throw new Error('Failed to create carpet via external API');
             }
@@ -35,7 +35,6 @@ export class ProductsLinksController {
                 throw new NotFoundException('Invalid data format');
             }
             const updatedUrls = await this.productsLinksService.update(category, products.data?.product_links);
-
             res.status(HttpStatus.OK).send(updatedUrls); // Send only the array of updated URLs
         } catch (error) {
             throw error;

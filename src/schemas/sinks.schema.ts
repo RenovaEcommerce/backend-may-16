@@ -20,17 +20,17 @@ export class Sinks {
   @Prop({ default: null })
   model: string;
 
+  @Prop({ default: null })
+  uid: string;
+
   @Prop({ type: SchemaTypes.Mixed, default: null })
-  sepcifications: Record<string, any>;
+  specifications: Record<string, any>;
 
   @Prop({ default: null })
   price: number;
 
   @Prop({ default: 0 })
   stock: number;
-
-  @Prop({ default: null })
-  description: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object

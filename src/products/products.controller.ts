@@ -116,8 +116,6 @@ export class ProductsController {
   @Post('/add/products') // Assuming you're using a framework like NestJS
   async addProducts(@Body() data: any, @Res() res: Response) {
     try {
-      // res.status(HttpStatus.OK).send({ message: 'Product Scrapping Started!'});
-      // data = {urls:["https://www.build.com/daltile-m0elhexqpmsu/s1751241?uid=4139143&searchId=qKuQrQXAaE", "https://www.build.com/emser-tile-w80char1012mpk/s1619167?uid=3847156&searchId=DPapQ6R3ez"], folder:'tile'}
       const products = await axios.post('http://localhost:8000/fetch-products', data);
       if (products.status !== 200) {
         throw new Error('Failed to create carpet via external API');
@@ -126,7 +124,6 @@ export class ProductsController {
       return res.status(HttpStatus.CREATED).send({ message: 'Product Scrapped Successfully!', savedProducts });
     } catch (error) {
       console.error('Error creating carpet:', error.message);
-      // Optionally, you may want to throw the error further to handle it elsewhere
       throw error;
     }
   }

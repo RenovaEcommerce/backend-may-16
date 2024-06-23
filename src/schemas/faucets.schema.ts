@@ -27,16 +27,13 @@ export class Faucets {
   uid: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
-  sepcifications: Record<string, any>;
+  specifications: Record<string, any>;
 
   @Prop({ default: 0.0 })
   price: number;
 
   @Prop({ default: 0 })
   stock: number;
-
-  @Prop({ default: null })
-  description: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object
