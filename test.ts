@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { Vanities } from 'src/schemas/vanities.schema';
 import { Countertops } from 'src/schemas/countertops.schema';
 import { Tiles } from 'src/schemas/tiles.schema';
-// import { AllProductsType } from './products.interface';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { TopProduct } from 'src/schemas/topProducts.schema';
 import { Carpets } from 'src/schemas/carpet.schema';
@@ -14,10 +13,6 @@ import { CreateCarpetDto } from 'src/dto/create-carpet.dto';
 import axios from 'axios';
 import { CreateHardwoodDto } from 'src/dto/create-hardwood.dto';
 import { CreateVinylDto } from 'src/dto/create-vinyl.dto';
-import { CreateTileDto } from 'src/dto/create-tile-.dto';
-import { CreateTilesDto } from 'src/dto/create-multi-tiles.dto';
-import { Product } from 'src/schemas/products.schema';
-import { CreateProductsDto } from 'src/dto/products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -32,8 +27,6 @@ export class ProductsService {
     @InjectModel(Carpets.name, 'productsDb') private carpetModel: Model<Carpets>,
     @InjectModel(Hardwoods.name, 'productsDb') private hardwoodModel: Model<Hardwoods>,
     @InjectModel(Vinyls.name, 'productsDb') private vinylModel: Model<Vinyls>,
-    @InjectModel(Product.name, 'productsDb') private productlModel: Model<Product>,
-
   ) {
     this.modelMap = {
       countertops: this.countertopModel,

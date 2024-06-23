@@ -1,9 +1,7 @@
 import { Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Query, Res } from '@nestjs/common';
 import { ProductsService } from './products.service';
-// import { AllProductsType } from './products.interface';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { Response, query } from 'express';
-import { CreateCarpetDto } from 'src/dto/create-carpet.dto';
 import axios from 'axios';
 
 @Controller('/products')
@@ -54,64 +52,6 @@ export class ProductsController {
   ): Promise<any> {
     return this.productsService.searchByKeywordInCategory(category, query);
   }
-
-
-  // @Post('/create-carpet')
-  // async createCarpet(@Body() createCarpetDto: CreateCarpetDto) {
-  //   return this.productsService.createCarpet(createCarpetDto);
-  // }
-
-  // @Post('/add/carpets') // Assuming you're using a framework like NestJS
-  // async addCarpet(@Body() data: any, @Res() res: Response) {
-  //   try {
-  //     res.status(HttpStatus.OK).send({ message: 'Product Scrapping Started!'});
-  //     const products = await axios.post('http://localhost:8000/getcarpet', {urls:data});
-  //     if (products.status !== 200) {
-  //       throw new Error('Failed to create carpet via external API');
-  //     }
-  //     const savedCarpet = await this.productsService.createCarpet(products.data[0]);
-  //     // res.status(HttpStatus.OK).send({ message: 'Product Scrapped Successfully!', data });
-  //     return savedCarpet;
-  //   } catch (error) {
-  //     console.error('Error creating carpet:', error.message);
-  //     // Optionally, you may want to throw the error further to handle it elsewhere
-  //     throw error;
-  //   }
-  // }
-
-  // @Get('/add/hardwood')
-  // async getHardwood() {
-  //   try {
-  //     const data = {
-  //       urls: ["https://shawfloors.com/flooring/hardwood/details/landmark-sliced-oak-sw747/gateway"]
-  //     }
-  //     const products = await axios.post('http://localhost:8000/gethardwood', data);
-  //     if (products.status !== 200) {
-  //       throw new Error('Failed to create hardwood via external API');
-  //     }
-  //     const savedHardwood = await this.productsService.createHardwood(products.data[0]);
-  //     return savedHardwood;
-  //   } catch (error) {
-  //     console.error('Error creating carpet:', error.message);
-  //   }
-  // }
-
-  // @Get('/add/vinyl')
-  // async getVinyl() {
-  //   try {
-  //     const data = {
-  //       urls: ["https://shawfloors.com/flooring/carpet/details/vintage-revival-cc77b/turmeric"]
-  //     }
-  //     const products = await axios.post('http://localhost:8000/getvinyl', data);
-  //     if (products.status !== 200) {
-  //       throw new Error('Failed to create vinyl via external API');
-  //     }
-  //     const savedVinyl = await this.productsService.createVinyl(products.data[0]);
-  //     return savedVinyl;
-  //   } catch (error) {
-  //     console.error('Error creating carpet:', error.message);
-  //   }
-  // }
 
   @Post('/add/products') // Assuming you're using a framework like NestJS
   async addProducts(@Body() data: any, @Res() res: Response) {

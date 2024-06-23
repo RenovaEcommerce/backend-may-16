@@ -36,7 +36,6 @@ import { Vinyls, VinylsSchema } from './schemas/vinyls.schema';
 import { ProductsLinks, ProductsLinksSchema } from './schemas/product-links.schema';
 import { ProductsLinksController } from './products-links/products-links.controller';
 import { ProductsLinksService } from './products-links/products-links.service';
-import { Product, ProductSchema } from './schemas/products.schema';
 import { Sinks, SinksSchema } from './schemas/sinks.schema';
 
 @Module({
@@ -85,7 +84,6 @@ import { Sinks, SinksSchema } from './schemas/sinks.schema';
         { name: Laminates.name, schema: LaminatesSchema },
         { name: Doors.name, schema: DoorsSchema },
         { name: Sinks.name, schema: SinksSchema },
-        { name: Product.name, schema: ProductSchema },
       ],
       'productsDb',
     ),

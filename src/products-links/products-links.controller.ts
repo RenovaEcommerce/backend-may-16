@@ -40,15 +40,4 @@ export class ProductsLinksController {
             throw error;
         }
     }
-
-    // @Put('/category')
-    // async update(@Body() data: { category: string, data: string[] }): Promise<ProductsLinks> {
-    //   const { category, data: urls } = data;
-    //   console.log(category, data)
-    //   if (!urls || !Array.isArray(urls)) {
-    //     throw new NotFoundException('Invalid data format');
-    //   }
-
-    //   return await this.productsLinksService.update(category, urls);
-    // }
 }

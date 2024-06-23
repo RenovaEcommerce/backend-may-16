@@ -1,23 +1,14 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Vanities } from 'src/schemas/vanities.schema';
 import { Countertops } from 'src/schemas/countertops.schema';
 import { Tiles } from 'src/schemas/tiles.schema';
-// import { AllProductsType } from './products.interface';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { TopProduct } from 'src/schemas/topProducts.schema';
 import { Carpets } from 'src/schemas/carpet.schema';
 import { Hardwoods } from 'src/schemas/hardwoods.schema';
 import { Vinyls } from 'src/schemas/vinyls.schema';
-import { CreateCarpetDto } from 'src/dto/create-carpet.dto';
-import axios from 'axios';
-import { CreateHardwoodDto } from 'src/dto/create-hardwood.dto';
-import { CreateVinylDto } from 'src/dto/create-vinyl.dto';
-import { CreateTileDto } from 'src/dto/create-tile-.dto';
-import { CreateTilesDto } from 'src/dto/create-multi-tiles.dto';
-import { Product } from 'src/schemas/products.schema';
-import { CreateProductsDto } from 'src/dto/products.dto';
 import { Laminates } from 'src/schemas/laminates.schema';
 import { Doors } from 'src/schemas/doors.schema';
 import { Sinks } from 'src/schemas/sinks.schema';
@@ -40,8 +31,6 @@ export class ProductsService {
     @InjectModel(Faucets.name, 'productsDb') private faucetsModel: Model<any>,
     @InjectModel(Vanities.name, 'productsDb') private vanitiesModel: Model<any>,
     @InjectModel(TopProduct.name, 'productsDb') private topProductModel: Model<any>,
-    @InjectModel(Product.name, 'productsDb') private productlModel: Model<Product>,
-
   ) {
     this.modelMap = {
       carpets: this.carpetsModel,
@@ -236,22 +225,6 @@ export class ProductsService {
     }
   }
 
-  async createCarpet(createCarpetDto: CreateCarpetDto): Promise<Carpets> {
-    const createdCarpet = new this.carpetsModel(createCarpetDto);
-    return await createdCarpet.save();
-  }
-
-  async createHardwood(createHardwoodDto: CreateHardwoodDto): Promise<Hardwoods> {
-    const createdHardwood = new this.hardwoodsModel(createHardwoodDto);
-    return await createdHardwood.save();
-  }
-
-  async createVinyl(createVinylDto: CreateVinylDto): Promise<Vinyls> {
-    const createdvinyl = new this.vinylsModel(createVinylDto);
-    return await createdvinyl.save();
-  }
-
-
  async createProducts(modelName: string, createProductsDto: any): Promise<any[]> {
     const model = this.getModel(modelName);
     if (createProductsDto?.length > 1) {
@@ -260,28 +233,6 @@ export class ProductsService {
       const createdProduct = new model(createProductsDto[0]);
       await createdProduct.save();
       return [createdProduct];
-    }
-  }
-
-  async getCarpet() {
-    try {
-      // Call external API and wait for the response
-      const response = await axios.post('http://localhost:8000/products/create-carpet');
-
-      if (response.status !== 200) {
-        throw new Error('Failed to create carpet via external API');
-      }
-
-      // Assuming the external API returns the created carpet details
-      const createdCarpetData = response.data;
-
-      // Optionally, you can use the response data to create a local record
-      const createdCarpet = new this.carpetsModel(createdCarpetData);
-      return await createdCarpet.save();
-    } catch (error) {
-      // Handle errors appropriately
-      console.error('Error creating carpet:', error.message);
-      throw new InternalServerErrorException('Failed to create carpet');
     }
   }
 
