@@ -25,7 +25,10 @@ export class Countertops {
 
   @Prop({ default: null })
   uid: string;
-
+  
+  @Prop({ default: null })
+  filtering: string;
+  
   @Prop({ type: SchemaTypes.Mixed, default: null })
   specifications: Record<string, any>;
 

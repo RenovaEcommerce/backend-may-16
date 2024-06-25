@@ -242,6 +242,12 @@ export class ProductsService {
     return uids.map(doc => doc.uid); // Extract uid values from the documents and return as a flat array
   }
 
+  async findByCategory(category: string, model_nos: string[]): Promise<any[]> {
+    const model = this.getModel(category);
+    const result = await model.find({ model: { $in: model_nos } });
+    return result;
+  }
+
   async findTopProducts(category: string) {
     const topProducts = await this.topProductModel.find({ 'type': category }).exec()
     return topProducts;

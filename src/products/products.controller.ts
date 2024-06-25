@@ -75,6 +75,20 @@ export class ProductsController {
       }
       return this.productsService.findAllUids(category);
   }
+
+  @Post('/get-product')
+  async getByCategory(@Body('category') category: string, @Body('model') model: string[]): Promise<any> {
+    if (!category) {
+      throw new NotFoundException('Category not provided');
+    }
+    if (!model) {
+      throw new NotFoundException('Model not provided');
+    }
+    // Await the result from the service
+    const result = await this.productsService.findByCategory(category, model);
+    return result;
+  }
+
   @Get('/topproducts/:category')
   async findTopProducts(@Param('category') category: string) {
     return this.productsService.findTopProducts(category);

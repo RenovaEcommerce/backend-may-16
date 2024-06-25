@@ -18,6 +18,12 @@ export class Doors {
   url: string;
 
   @Prop({ default: null })
+  filtering: string;
+
+  @Prop({ default: null })
+  color: string;
+
+  @Prop({ default: null })
   model: string;
 
   @Prop({ default: null })
@@ -43,8 +49,8 @@ export class Doors {
   @Prop({ type: [String], default: null })
   images: string[];
 
-  @Prop({ type: [{ color_name: String, image_url: String }], default: null })
-  variants: { color_name: string; image_url: string }[];
+  @Prop({ type: SchemaTypes.Mixed, default: {} })
+  variants: Record<string, any>; // This allows `details` to be any object
 }
 
 export const DoorsSchema = SchemaFactory.createForClass(Doors);

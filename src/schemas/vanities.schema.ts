@@ -24,6 +24,12 @@ export class Vanities {
   brand: string;
 
   @Prop({ default: null })
+  filtering: string;
+
+  @Prop({ default: null })
+  color: string;
+  
+  @Prop({ default: null })
   uid: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
@@ -41,8 +47,8 @@ export class Vanities {
   @Prop({ type: [String], default: null })
   images: string[];
 
-  @Prop({ type: [{ color_name: String, image_url: String }], default: null })
-  variants: { color_name: string; image_url: string }[];
+  @Prop({ type: SchemaTypes.Mixed, default: {} })
+  variants: Record<string, any>; // This allows `details` to be any object
 }
 
 export const VanitiesSchema = SchemaFactory.createForClass(Vanities);

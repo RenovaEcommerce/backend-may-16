@@ -26,6 +26,9 @@ export class Carpets {
   @Prop({ default: null })
   uid: string;
 
+  @Prop({ default: null })
+  filtering: string;
+
   @Prop({ type: SchemaTypes.Mixed, default: null })
   specifications: Record<string, any>;
 
@@ -43,8 +46,8 @@ export class Carpets {
   @Prop({ type: [String], default: null })
   images: string[];
 
-  @Prop({ type: [{ color_name: String, image_url: String }], default: null })
-  variants: { color_name: string; image_url: string }[];
+  @Prop({ type: SchemaTypes.Mixed, default: {} })
+  variants: Record<string, any>; // This allows `details` to be any object
 }
 
 export const CarpetsSchema = SchemaFactory.createForClass(Carpets);
