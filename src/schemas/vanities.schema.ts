@@ -28,7 +28,7 @@ export class Vanities {
 
   @Prop({ default: null })
   color: string;
-  
+
   @Prop({ default: null })
   uid: string;
 
@@ -46,6 +46,9 @@ export class Vanities {
 
   @Prop({ type: [String], default: null })
   images: string[];
+
+  @Prop({ default: null })
+  main_image: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
   variants: Record<string, any>; // This allows `details` to be any object

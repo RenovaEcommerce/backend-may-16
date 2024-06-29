@@ -38,13 +38,14 @@ export class Carpets {
   @Prop({ default: 0 })
   stock: number;
 
-
-
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object
 
   @Prop({ type: [String], default: null })
   images: string[];
+
+  @Prop({ default: null })
+  main_image: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
   variants: Record<string, any>; // This allows `details` to be any object
