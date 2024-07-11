@@ -36,3 +36,18 @@ export class ProductsLinks extends Document {
 }
 
 export const ProductsLinksSchema = SchemaFactory.createForClass(ProductsLinks);
+
+// Pre-save hook to remove duplicates
+ProductsLinksSchema.pre('save', function (next) {
+  this.carpets = [...new Set(this.carpets)];
+  this.hardwoods = [...new Set(this.hardwoods)];
+  this.vinyls = [...new Set(this.vinyls)];
+  this.tiles = [...new Set(this.tiles)];
+  this.sinks = [...new Set(this.sinks)];
+  this.faucets = [...new Set(this.faucets)];
+  this.vanities = [...new Set(this.vanities)];
+  this.doors = [...new Set(this.doors)];
+  this.countertops = [...new Set(this.countertops)];
+  this.laminates = [...new Set(this.laminates)];
+  next();
+});

@@ -7,12 +7,6 @@ import { Response } from 'express';
 @Controller('products-links')
 export class ProductsLinksController {
     constructor(private readonly productsLinksService: ProductsLinksService) { }
-
-    //   @Get()
-    //   async findOne(): Promise<ProductsLinks> {
-    //     return await this.productsLinksService.findOne();
-    //   }
-
     @Get()
     async findLinksByCategory(@Query('category') category: string): Promise<string[]> {
         console.log(category)
@@ -21,8 +15,6 @@ export class ProductsLinksController {
         }
         return this.productsLinksService.findAllByCategory(category);
     }
-
-
     @Put('/get-urls')
     async update(@Body() data: { category: string, min: number, max:number }, @Res() res: Response): Promise<void> {
         const { category, min, max } = data;

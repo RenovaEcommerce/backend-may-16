@@ -29,6 +29,9 @@ export class Carpets {
   @Prop({ default: null })
   filtering: string;
 
+  @Prop({ default: null })
+  image_navigation: string;
+
   @Prop({ type: SchemaTypes.Mixed, default: null })
   specifications: Record<string, any>;
 

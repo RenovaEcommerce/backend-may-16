@@ -44,6 +44,9 @@ export class Doors {
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object
 
+  @Prop({ default: null })
+  image_navigation: string;
+  
   @Prop({ type: [String], default: null })
   images: string[];
 

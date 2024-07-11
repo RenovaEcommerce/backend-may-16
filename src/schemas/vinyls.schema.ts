@@ -41,12 +41,15 @@ export class Vinyls {
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object
 
+  @Prop({ default: null })
+  image_navigation: string;
+  
   @Prop({ type: [String], default: null })
   images: string[];
 
   @Prop({ default: null })
   main_image: string;
-  
+
   @Prop({ type: SchemaTypes.Mixed, default: {} })
   variants: Record<string, any>; // This allows `details` to be any object
 }
