@@ -76,31 +76,58 @@ export class ProductsService {
     const page = parseInt(query.page as string) || 1;
     const limit = parseInt(query.limit as string) || 8;
     const skip = (page - 1) * limit;
-
     const tile = await this.tilesModel.find().skip(skip).limit(limit).exec();
+    const faucets = await this.faucetsModel.find().skip(skip).limit(limit).exec();
+    const sinks = await this.sinksModel.find().skip(skip).limit(limit).exec();
+    const laminates = await this.laminatesModel
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
     const countertop = await this.countertopsModel
       .find()
       .skip(skip)
       .limit(limit)
       .exec();
-    const cabinet = await this.vanitiesModel
+    const vanities = await this.vanitiesModel
       .find()
       .skip(skip)
       .limit(limit)
       .exec();
-    const carpet = await this.carpetsModel
+    const doors = await this.doorsModel
       .find()
       .skip(skip)
       .limit(limit)
       .exec();
-
+    const carpets = await this.carpetsModel
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    const vinyls = await this.vinylsModel
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    const hardwoods = await this.hardwoodsModel
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .exec();
     // Объединяем результаты в один массив
-    const combinedProducts = [...cabinet, ...countertop, ...tile, ...carpet].sort(() => Math.random() - 0.5)
+    const combinedProducts = [...vanities, ...tile, ...doors, ...carpets, ...countertop, ...vinyls, ...laminates, ...hardwoods, ...faucets, ...sinks].sort(() => Math.random() - 0.5)
     const totalCounts = await Promise.all([
       this.tilesModel.countDocuments().exec(),
-      this.countertopsModel.countDocuments().exec(),
       this.vanitiesModel.countDocuments().exec(),
-      this.carpetsModel.countDocuments().exec()
+      this.carpetsModel.countDocuments().exec(),
+      this.doorsModel.countDocuments().exec(),
+      this.faucetsModel.countDocuments().exec(),
+      this.vinylsModel.countDocuments().exec(),
+      this.laminatesModel.countDocuments().exec(),
+      this.hardwoodsModel.countDocuments().exec(),
+      this.sinksModel.countDocuments().exec(),
+      this.countertopsModel.countDocuments().exec()
     ]);
 
     // Sum up all counts
@@ -135,6 +162,24 @@ export class ProductsService {
         break;
       case 'carpets':
         model = this.carpetsModel;
+        break;
+      case 'doors':
+        model = this.doorsModel;
+        break;
+      case 'laminates':
+        model = this.laminatesModel;
+        break;
+      case 'hardwoods':
+        model = this.hardwoodsModel;
+        break;
+      case 'faucets':
+        model = this.faucetsModel;
+        break;
+      case 'vinyls':
+        model = this.vinylsModel;
+        break;
+      case 'sinks':
+        model = this.sinksModel;
         break;
       default:
         // В случае если категория не соответствует, возможно стоит выбросить ошибку или вернуть пустой результат
@@ -182,6 +227,24 @@ export class ProductsService {
       case 'carpets':
         model = this.carpetsModel;
         break;
+      case 'doors':
+        model = this.doorsModel;
+        break;
+      case 'laminates':
+        model = this.laminatesModel;
+        break;
+      case 'hardwoods':
+        model = this.hardwoodsModel;
+        break;
+      case 'faucets':
+        model = this.faucetsModel;
+        break;
+      case 'vinyls':
+        model = this.vinylsModel;
+        break;
+      case 'sinks':
+        model = this.sinksModel;
+        break;
       default:
         return { data: [], totalCount: 0 };
     }
@@ -225,7 +288,7 @@ export class ProductsService {
     }
   }
 
- async createProducts(modelName: string, createProductsDto: any): Promise<any[]> {
+  async createProducts(modelName: string, createProductsDto: any): Promise<any[]> {
     const model = this.getModel(modelName);
     if (createProductsDto?.length > 1) {
       return await model.insertMany(createProductsDto);
@@ -242,9 +305,9 @@ export class ProductsService {
     return uids.map(doc => doc.uid); // Extract uid values from the documents and return as a flat array
   }
 
-  async findByCategory(category: string, model_nos: string[]): Promise<any[]> {
+  async findByCategory(category: string, url: string[]): Promise<any[]> {
     const model = this.getModel(category);
-    const result = await model.find({ model: { $in: model_nos } });
+    const result = await model.find({ url: { $in: url } });
     return result;
   }
 
@@ -252,4 +315,48 @@ export class ProductsService {
     const topProducts = await this.topProductModel.find({ 'type': category }).exec()
     return topProducts;
   }
+
+  findUsersByNames(names: string[], category: string) {
+    const model = this.getModel(category);
+    return model.find({ image_navigation: { $in: names } }).exec();
+  }
+
+  async searchItems(query: any, category:string) {
+    const items = await this.getModel(category).find({ filtering: new RegExp(query, 'i') });
+    const totalCount = await this.getModel(category).countDocuments({ filtering: new RegExp(query, 'i') });
+    return { data: items, totalCount };
+  }
+
+  async searchByColors(colors: string[], category:string){
+    const items = await this.getModel(category).find({ color: { $in: colors } });
+    const totalCount = await this.getModel(category).countDocuments({ color: { $in: colors } });
+
+    return { data: items, totalCount };
+  }
+
+  async findMatchesInEveryField(category: string, searchString: string, sortBy: 'createdAt' | 'price' | '', sortOrder: 'asc' | 'desc' | '') {
+    const searchTerms = searchString.split(/\s+/).filter(term => term.length > 0);
+
+    // Create a query that ensures all search terms are present in the 'filtering' field
+    const query = searchTerms.length > 0 ? {
+        $and: searchTerms.map(term => ({
+            filtering: { $regex: new RegExp(term, 'i') }
+        }))
+    } : {};
+
+    // Fetch the products from the database that match the constructed query
+    const queryBuilder = this.getModel(category).find(query);
+
+    // Apply sorting if sortBy and sortOrder are not empty
+    if (sortBy && sortOrder) {
+        const order = sortOrder === 'asc' ? 1 : -1;
+        queryBuilder.sort({ [sortBy]: order });
+    }
+
+    const items = await queryBuilder.exec();
+    return items;
+}
+
+
+
 }

@@ -4,6 +4,7 @@ import { Document, SchemaTypes } from 'mongoose';
 export type HardwoodsDocument = Hardwoods & Document;
 
 @Schema()
+@Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class Hardwoods {
   @Prop({ default: null })
   meta_description: string;
@@ -35,7 +36,7 @@ export class Hardwoods {
   @Prop({ default: 0.0 })
   price: number;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 10 })
   stock: number;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
@@ -49,6 +50,9 @@ export class Hardwoods {
 
   @Prop({ default: null })
   main_image: string;
+
+  @Prop({ default: null })
+  color: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
   variants: Record<string, any>; // This allows `details` to be any object

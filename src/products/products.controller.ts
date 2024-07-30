@@ -77,15 +77,15 @@ export class ProductsController {
   }
 
   @Post('/get-product')
-  async getByCategory(@Body('category') category: string, @Body('model') model: string[]): Promise<any> {
+  async getByCategory(@Body('category') category: string, @Body('url') url: string[]): Promise<any> {
     if (!category) {
       throw new NotFoundException('Category not provided');
     }
-    if (!model) {
+    if (!url) {
       throw new NotFoundException('Model not provided');
     }
     // Await the result from the service
-    const result = await this.productsService.findByCategory(category, model);
+    const result = await this.productsService.findByCategory(category, url);
     return result;
   }
 
@@ -93,4 +93,41 @@ export class ProductsController {
   async findTopProducts(@Param('category') category: string) {
     return this.productsService.findTopProducts(category);
   }
+
+  @Post('/get-variants')
+  async getAllVariants(@Body('modelsList') modelsList: string[],@Body('category') category: string): Promise<string[]> {
+      if (modelsList.length === 0) {
+          throw new NotFoundException('Model not provided');
+      }
+      return this.productsService.findUsersByNames(modelsList, category);
+  }
+  @Post('/search')
+  async searchProducts(@Body('query') query: string,@Body('category') category: string) {
+      if (query?.length === 0) {
+          throw new NotFoundException('Model not provided');
+      }
+      return this.productsService.searchItems(query, category);
+  }
+
+  @Post('searchByColors')
+  async searchByColors(@Body() body, @Res() res) {
+    try {
+      const { colors, category } = body;
+      const result = await this.productsService.searchByColors(colors, category);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+  @Post('quries')
+  async findMatchesInField(@Body() body, @Res() res) {
+    try {
+      const { category, searchString, sortBy, sortOrder} = body;
+      const result = await this.productsService.findMatchesInEveryField(category, searchString, sortBy, sortOrder);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
 }

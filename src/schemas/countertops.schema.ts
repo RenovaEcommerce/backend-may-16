@@ -3,6 +3,7 @@ import { Document, SchemaTypes } from 'mongoose';
 
 export type CountertopsDocument = Countertops & Document;
 
+@Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 @Schema()
 export class Countertops {
   @Prop({ default: null })
@@ -35,7 +36,7 @@ export class Countertops {
   @Prop({ default: 0.0 })
   price: number;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 10 })
   stock: number;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
@@ -43,6 +44,12 @@ export class Countertops {
 
   @Prop({ type: [String], default: null })
   images: string[];
+
+  @Prop({ default: null })
+  color: string;
+
+  @Prop({ default: null })
+  main_image: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
   variants: Record<string, any[]>;

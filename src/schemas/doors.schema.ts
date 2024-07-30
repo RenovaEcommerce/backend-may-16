@@ -4,6 +4,7 @@ import { Document, SchemaTypes } from 'mongoose';
 export type DoorsDocument = Doors & Document;
 
 @Schema()
+@Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class Doors {
   @Prop({ default: null })
   meta_description: string;
@@ -38,7 +39,7 @@ export class Doors {
   @Prop({ default: 0.0 })
   price: number;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 10 })
   stock: number;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })

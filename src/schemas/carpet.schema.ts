@@ -3,7 +3,7 @@ import { Document, SchemaTypes } from 'mongoose';
 
 export type CarpetsDocument = Carpets & Document;
 
-@Schema()
+@Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class Carpets {
   @Prop({ default: null })
   meta_description: string;
@@ -29,29 +29,32 @@ export class Carpets {
   @Prop({ default: null })
   filtering: string;
 
-  @Prop({ default: null })
-  image_navigation: string;
-
   @Prop({ type: SchemaTypes.Mixed, default: null })
   specifications: Record<string, any>;
 
   @Prop({ default: 0.0 })
   price: number;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 10 })
   stock: number;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
   details: Record<string, any>; // This allows `details` to be any object
 
+  @Prop({ default: null })
+  image_navigation: string;
+  
   @Prop({ type: [String], default: null })
   images: string[];
 
   @Prop({ default: null })
+  color: string;
+  
+  @Prop({ default: null })
   main_image: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
-  variants: Record<string, any>; // This allows `details` to be any object
+  variants: Record<string, any>; // This allows `variants` to be any object
 }
 
 export const CarpetsSchema = SchemaFactory.createForClass(Carpets);
