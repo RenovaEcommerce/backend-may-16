@@ -109,16 +109,6 @@ export class ProductsController {
       return this.productsService.searchItems(query, category);
   }
 
-  @Post('searchByColors')
-  async searchByColors(@Body() body, @Res() res) {
-    try {
-      const { colors, category } = body;
-      const result = await this.productsService.searchByColors(colors, category);
-      res.json(result);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  }
   @Post('quries')
   async findMatchesInField(@Body() body, @Res() res) {
     try {

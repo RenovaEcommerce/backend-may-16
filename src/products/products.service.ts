@@ -327,13 +327,6 @@ export class ProductsService {
     return { data: items, totalCount };
   }
 
-  async searchByColors(colors: string[], category:string){
-    const items = await this.getModel(category).find({ color: { $in: colors } });
-    const totalCount = await this.getModel(category).countDocuments({ color: { $in: colors } });
-
-    return { data: items, totalCount };
-  }
-
   async findMatchesInEveryField(category: string, searchString: string, sortBy: 'createdAt' | 'price' | '', sortOrder: 'asc' | 'desc' | '') {
     const searchTerms = searchString.split(/\s+/).filter(term => term.length > 0);
 
