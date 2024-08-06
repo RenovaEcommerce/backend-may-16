@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Vanities } from 'src/schemas/vanities.schema';
@@ -290,14 +290,23 @@ export class ProductsService {
 
   async createProducts(modelName: string, createProductsDto: any): Promise<any[]> {
     const model = this.getModel(modelName);
-    if (createProductsDto?.length > 1) {
-      return await model.insertMany(createProductsDto);
+
+    // Filter out any products with null model field
+    const validProducts = createProductsDto.filter(product => product.model !== null);
+
+    if (validProducts.length === 0) {
+      throw new HttpException('No valid products to save. Any product has a null model field.', HttpStatus.BAD_REQUEST);
+    }
+
+    if (validProducts.length > 1) {
+      return await model.insertMany(validProducts);
     } else {
-      const createdProduct = new model(createProductsDto[0]);
+      const createdProduct = new model(validProducts[0]);
       await createdProduct.save();
       return [createdProduct];
     }
   }
+  
 
   async findAllUids(category: string) {
     const model = this.getModel(category);
