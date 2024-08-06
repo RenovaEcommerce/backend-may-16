@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 
-export type CarpetsDocument = Carpets & Document;
+export type SinksDocument = Sinks & Document;
 
+@Schema()
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
-export class Carpets {
+export class Sinks {
   @Prop({ default: null })
   meta_description: string;
 
@@ -21,18 +22,21 @@ export class Carpets {
   model: string;
 
   @Prop({ default: null })
-  brand: string;
+  filtering: string;
+
+  @Prop({ default: null })
+  color: string;
 
   @Prop({ default: null })
   uid: string;
 
   @Prop({ default: null })
-  filtering: string;
+  brand: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: null })
   specifications: Record<string, any>;
 
-  @Prop({ default: 0.0 })
+  @Prop({ default: null })
   price: number;
 
   @Prop({ default: 10 })
@@ -48,13 +52,10 @@ export class Carpets {
   images: string[];
 
   @Prop({ default: null })
-  color: string;
-  
-  @Prop({ default: null })
   main_image: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
-  variants: Record<string, any>; // This allows `variants` to be any object
+  variants: Record<string, any>; // This allows `details` to be any object
 }
 
-export const CarpetsSchema = SchemaFactory.createForClass(Carpets);
+export const SinksSchema = SchemaFactory.createForClass(Sinks);

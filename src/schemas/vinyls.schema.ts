@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 
-export type CarpetsDocument = Carpets & Document;
+export type VinylsDocument = Vinyls & Document;
 
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
-export class Carpets {
+@Schema()
+export class Vinyls {
   @Prop({ default: null })
   meta_description: string;
 
@@ -49,12 +50,12 @@ export class Carpets {
 
   @Prop({ default: null })
   color: string;
-  
+
   @Prop({ default: null })
   main_image: string;
 
   @Prop({ type: SchemaTypes.Mixed, default: {} })
-  variants: Record<string, any>; // This allows `variants` to be any object
+  variants: Record<string, any>; // This allows `details` to be any object
 }
 
-export const CarpetsSchema = SchemaFactory.createForClass(Carpets);
+export const VinylsSchema = SchemaFactory.createForClass(Vinyls);

@@ -2,15 +2,20 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 // Schemas
-import { Countertop, CountertopSchema } from './schemas/countertops.schema';
-import { Cabinet, CabinetSchema } from './schemas/cabinet.schema';
+import { Countertops, CountertopsSchema } from './schemas/countertops.schema';
+import { Vanities, VanitiesSchema } from './schemas/vanities.schema';
 import { TopProduct, TopProductSchema } from './schemas/topProducts.schema';
-import { Tile, TileSchema } from './schemas/tile.schema';
-import { Carpet, CarpetSchema } from './schemas/carpet.schema';
+import { Tiles, TilesSchema } from './schemas/tiles.schema';
+import { Carpets, CarpetsSchema } from './schemas/carpet.schema';
 import { Services, ServicesSchema } from './schemas/services.schema';
 import { Form, FormSchema } from './schemas/form.schema';
 import { Location, LocationSchema } from './schemas/location.schema';
 import { Blog, BlogSchema } from './schemas/blog.schema';
+import { Faucets, FaucetsSchema } from './schemas/faucets.schema';
+import { Laminates, LaminatesSchema} from './schemas/laminates.schema';
+import { Doors, DoorsSchema } from './schemas/doors.schema';
+
+
 
 // Services & Controllers
 import { ProductsService } from './products/products.service';
@@ -26,10 +31,20 @@ import { BlogController } from './blog/blog.controller';
 import { ServiceSub, ServiceSubSchema } from './schemas/service.schema';
 import { ServiceSubService } from './service/servicesub.service';
 import { ServiceSubController } from './service/servicesub.controller';
+import { Hardwoods, HardwoodsSchema } from './schemas/hardwoods.schema';
+import { Vinyls, VinylsSchema } from './schemas/vinyls.schema';
+import { ProductsLinks, ProductsLinksSchema } from './schemas/product-links.schema';
+import { ProductsLinksController } from './products-links/products-links.controller';
+import { ProductsLinksService } from './products-links/products-links.service';
+import { Sinks, SinksSchema } from './schemas/sinks.schema';
 
 @Module({
   imports: [
     // MongoDB connections
+    MongooseModule.forRoot(
+      'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/productsLinks?retryWrites=true&w=majority&appName=RenovaCluster',
+      { connectionName: 'productsLinksDb' },
+    ),
     MongooseModule.forRoot(
       'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/products?retryWrites=true&w=majority&appName=RenovaCluster',
       { connectionName: 'productsDb' },
@@ -58,13 +73,26 @@ import { ServiceSubController } from './service/servicesub.controller';
     // Feature modules
     MongooseModule.forFeature(
       [
-        { name: Countertop.name, schema: CountertopSchema },
-        { name: Cabinet.name, schema: CabinetSchema },
+        { name: Countertops.name, schema: CountertopsSchema },
+        { name: Vanities.name, schema: VanitiesSchema },
         { name: TopProduct.name, schema: TopProductSchema },
-        { name: Tile.name, schema: TileSchema },
-        { name: Carpet.name, schema: CarpetSchema },
+        { name: Tiles.name, schema: TilesSchema },
+        { name: Carpets.name, schema: CarpetsSchema },
+        { name: Hardwoods.name, schema: HardwoodsSchema },
+        { name: Vinyls.name, schema: VinylsSchema },
+        { name: Faucets.name, schema: FaucetsSchema },
+        { name: Laminates.name, schema: LaminatesSchema },
+        { name: Doors.name, schema: DoorsSchema },
+        { name: Sinks.name, schema: SinksSchema },
       ],
       'productsDb',
+    ),
+
+    MongooseModule.forFeature(
+      [
+        { name: ProductsLinks.name, schema: ProductsLinksSchema },
+      ],
+      'productsLinksDb',
     ),
 
     MongooseModule.forFeature(
@@ -95,6 +123,7 @@ import { ServiceSubController } from './service/servicesub.controller';
     LocationService,
     BlogService,
     ServiceSubService,
+    ProductsLinksService,
   ],
   controllers: [
     ProductsController,
@@ -103,6 +132,7 @@ import { ServiceSubController } from './service/servicesub.controller';
     LocationController,
     BlogController,
     ServiceSubController,
+    ProductsLinksController,
   ],
 })
-export class AppModule {}
+export class AppModule { }

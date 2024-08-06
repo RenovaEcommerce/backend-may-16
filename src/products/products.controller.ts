@@ -1,12 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Query, Res } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { AllProductsType } from './products.interface';
 import { Query as ExpressQuery } from 'express-serve-static-core';
-import { query } from 'express';
+import { Response, query } from 'express';
+import axios from 'axios';
 
 @Controller('/products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) { }
 
   @Get()
   async findAll(@Query() query: ExpressQuery): Promise<{ data: any[], totalCount: number }> {
@@ -53,8 +53,71 @@ export class ProductsController {
     return this.productsService.searchByKeywordInCategory(category, query);
   }
 
+  @Post('/add/products') // Assuming you're using a framework like NestJS
+  async addProducts(@Body() data: any, @Res() res: Response) {
+    try {
+      const products = await axios.post('http://localhost:8000/fetch-products', data);
+      if (products.status !== 200) {
+        throw new Error('Failed to create carpet via external API');
+      }
+      const savedProducts = await this.productsService.createProducts(data?.category, products.data);
+      return res.status(HttpStatus.CREATED).send({ message: 'Product Scrapped Successfully!', savedProducts });
+    } catch (error) {
+      console.error('Error creating carpet:', error.message);
+      throw error;
+    }
+  }
+
+  @Post('/get-uids')
+  async getAllUids(@Body('category') category: string): Promise<string[]> {
+      if (!category) {
+          throw new NotFoundException('Category not provided');
+      }
+      return this.productsService.findAllUids(category);
+  }
+
+  @Post('/get-product')
+  async getByCategory(@Body('category') category: string, @Body('url') url: string[]): Promise<any> {
+    if (!category) {
+      throw new NotFoundException('Category not provided');
+    }
+    if (!url) {
+      throw new NotFoundException('Model not provided');
+    }
+    // Await the result from the service
+    const result = await this.productsService.findByCategory(category, url);
+    return result;
+  }
+
   @Get('/topproducts/:category')
   async findTopProducts(@Param('category') category: string) {
     return this.productsService.findTopProducts(category);
   }
+
+  @Post('/get-variants')
+  async getAllVariants(@Body('modelsList') modelsList: string[],@Body('category') category: string): Promise<string[]> {
+      if (modelsList.length === 0) {
+          throw new NotFoundException('Model not provided');
+      }
+      return this.productsService.findUsersByNames(modelsList, category);
+  }
+  @Post('/search')
+  async searchProducts(@Body('query') query: string,@Body('category') category: string) {
+      if (query?.length === 0) {
+          throw new NotFoundException('Model not provided');
+      }
+      return this.productsService.searchItems(query, category);
+  }
+
+  @Post('quries')
+  async findMatchesInField(@Body() body, @Res() res) {
+    try {
+      const { category, searchString, sortBy, sortOrder} = body;
+      const result = await this.productsService.findMatchesInEveryField(category, searchString, sortBy, sortOrder);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
 }
