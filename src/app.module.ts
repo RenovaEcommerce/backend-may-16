@@ -12,10 +12,16 @@ import { Form, FormSchema } from './schemas/form.schema';
 import { Location, LocationSchema } from './schemas/location.schema';
 import { Blog, BlogSchema } from './schemas/blog.schema';
 import { Faucets, FaucetsSchema } from './schemas/faucets.schema';
-import { Laminates, LaminatesSchema} from './schemas/laminates.schema';
+import { Laminates, LaminatesSchema } from './schemas/laminates.schema';
 import { Doors, DoorsSchema } from './schemas/doors.schema';
+import { ServiceSub, ServiceSubSchema } from './schemas/service.schema';
+import { Hardwoods, HardwoodsSchema } from './schemas/hardwoods.schema';
+import { Vinyls, VinylsSchema } from './schemas/vinyls.schema';
+import { ProductsLinks, ProductsLinksSchema } from './schemas/product-links.schema';
+import { Sinks, SinksSchema } from './schemas/sinks.schema';
 
-
+import { MovingFormService } from './services/moving-form.service';
+import { MovingFormController } from './controller/moving-form.controller';
 
 // Services & Controllers
 import { ProductsService } from './products/products.service';
@@ -28,15 +34,12 @@ import { LocationService } from './services/location.service';
 import { LocationController } from './services/location.controller';
 import { BlogService } from './blog/blog.service';
 import { BlogController } from './blog/blog.controller';
-import { ServiceSub, ServiceSubSchema } from './schemas/service.schema';
 import { ServiceSubService } from './service/servicesub.service';
 import { ServiceSubController } from './service/servicesub.controller';
-import { Hardwoods, HardwoodsSchema } from './schemas/hardwoods.schema';
-import { Vinyls, VinylsSchema } from './schemas/vinyls.schema';
-import { ProductsLinks, ProductsLinksSchema } from './schemas/product-links.schema';
 import { ProductsLinksController } from './products-links/products-links.controller';
 import { ProductsLinksService } from './products-links/products-links.service';
-import { Sinks, SinksSchema } from './schemas/sinks.schema';
+import { MovingForm, MovingFormSchema } from './schemas/moving-form.schema';
+
 
 @Module({
   imports: [
@@ -68,6 +71,10 @@ import { Sinks, SinksSchema } from './schemas/sinks.schema';
     MongooseModule.forRoot(
       'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/blog?retryWrites=true&w=majority&appName=RenovaCluster',
       { connectionName: 'blogDb' },
+    ),
+    MongooseModule.forRoot(
+      'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/movingForm?retryWrites=true&w=majority&appName=RenovaCluster',
+      { connectionName: 'movingFormDb' },
     ),
 
     // Feature modules
@@ -115,6 +122,10 @@ import { Sinks, SinksSchema } from './schemas/sinks.schema';
       [{ name: Blog.name, schema: BlogSchema }],
       'blogDb',
     ),
+    MongooseModule.forFeature(
+      [{ name: MovingForm.name, schema: MovingFormSchema }],
+      'movingFormDb',
+    ),
   ],
   providers: [
     ProductsService,
@@ -124,6 +135,7 @@ import { Sinks, SinksSchema } from './schemas/sinks.schema';
     BlogService,
     ServiceSubService,
     ProductsLinksService,
+    MovingFormService,
   ],
   controllers: [
     ProductsController,
@@ -133,6 +145,7 @@ import { Sinks, SinksSchema } from './schemas/sinks.schema';
     BlogController,
     ServiceSubController,
     ProductsLinksController,
+    MovingFormController,
   ],
 })
-export class AppModule { }
+export class AppModule {}
