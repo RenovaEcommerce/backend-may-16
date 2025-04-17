@@ -6,24 +6,14 @@ import { Document } from 'mongoose';
 @Schema()
 export class Form extends Document {
  
-    @Prop({ required: true, trim: true })
+    @Prop({ trim: true })
     name: string;
   
-    
-    @Prop({ required: true, trim: true })
-    email: string;
   
     
     @Prop({ trim: true })
     number?: string;
   
-
-    @Prop({ trim: true })
-    city?: string;
-  
-   
-    @Prop({ trim: true })
-    zip?: string;
   
   
     @Prop({ trim: true })
