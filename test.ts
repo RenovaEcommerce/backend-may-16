@@ -9,7 +9,7 @@ import { TopProduct } from 'src/schemas/topProducts.schema';
 import { Carpets } from 'src/schemas/carpet.schema';
 import { Hardwoods } from 'src/schemas/hardwoods.schema';
 import { Vinyls } from 'src/schemas/vinyls.schema';
-import axios from 'axios';
+
 
 @Injectable()
 export class ProductsService {
@@ -186,29 +186,7 @@ export class ProductsService {
     }
   }
   
- 
 
-  async getCarpet() {
-    try {
-      // Call external API and wait for the response
-      const response = await axios.post('http://localhost:8000/products/create-carpet');
-
-      if (response.status !== 200) {
-        throw new Error('Failed to create carpet via external API');
-      }
-
-      // Assuming the external API returns the created carpet details
-      const createdCarpetData = response.data;
-
-      // Optionally, you can use the response data to create a local record
-      const createdCarpet = new this.carpetModel(createdCarpetData);
-      return await createdCarpet.save();
-    } catch (error) {
-      // Handle errors appropriately
-      console.error('Error creating carpet:', error.message);
-      throw new InternalServerErrorException('Failed to create carpet');
-    }
-  }
 
   async findTopProducts(category: string) {
     const topProducts = await this.topProductModel.find({ 'type': category }).exec()

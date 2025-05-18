@@ -24,8 +24,6 @@ import { MovingFormService } from './services/moving-form.service';
 import { MovingFormController } from './controller/moving-form.controller';
 
 // Services & Controllers
-import { ProductsService } from './products/products.service';
-import { ProductsController } from './products/products.controller';
 import { ServicesService } from './services/services.service';
 import { ServicesController } from './services/services.controller';
 import { FormService } from './form/form.service';
@@ -36,10 +34,10 @@ import { BlogService } from './blog/blog.service';
 import { BlogController } from './blog/blog.controller';
 import { ServiceSubService } from './service/servicesub.service';
 import { ServiceSubController } from './service/servicesub.controller';
-import { ProductsLinksController } from './products-links/products-links.controller';
-import { ProductsLinksService } from './products-links/products-links.service';
 import { MovingForm, MovingFormSchema } from './schemas/moving-form.schema';
-
+import { ServicesNew, ServicesNewSchema } from './schemas/servicesNew.schema';
+import { ServicesNewService } from './servicesNew/servicesNew.service';
+import { ServicesNewController } from './servicesNew/servicesNew.controller';
 
 @Module({
   imports: [
@@ -55,6 +53,15 @@ import { MovingForm, MovingFormSchema } from './schemas/moving-form.schema';
     MongooseModule.forRoot(
       'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/services?retryWrites=true&w=majority&appName=RenovaCluster',
       { connectionName: 'servicesDb' },
+
+    ),
+    MongooseModule.forFeature(
+      [{ name: ServicesNew.name, schema: ServicesNewSchema }],
+      'servicesNewDb',
+    ),
+    MongooseModule.forRoot(
+      'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/servicesNew?retryWrites=true&w=majority&appName=RenovaCluster',
+      { connectionName: 'servicesNewDb' },
     ),
     MongooseModule.forRoot(
       'mongodb+srv://mikhailyev:Moscow2024@renovacluster.mprylq8.mongodb.net/serviceSub?retryWrites=true&w=majority&appName=RenovaCluster',
@@ -128,23 +135,25 @@ import { MovingForm, MovingFormSchema } from './schemas/moving-form.schema';
     ),
   ],
   providers: [
-    ProductsService,
+    ServicesController,
+    ServicesNewController,
+    ServicesService,
+    ServicesNewService,
+
     ServicesService,
     FormService,
     LocationService,
     BlogService,
     ServiceSubService,
-    ProductsLinksService,
     MovingFormService,
   ],
   controllers: [
-    ProductsController,
     ServicesController,
     FormController,
     LocationController,
     BlogController,
     ServiceSubController,
-    ProductsLinksController,
+ 
     MovingFormController,
   ],
 })
