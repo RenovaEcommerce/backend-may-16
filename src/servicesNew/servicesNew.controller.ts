@@ -3,15 +3,15 @@ import { ServicesNewService } from './servicesNew.service';
 
 @Controller('servicesNew')
 export class ServicesNewController {
-  constructor(private readonly servicesService: ServicesNewService) {}
+  constructor(private readonly servicesNewService: ServicesNewService) {}
 
   @Get()
   async findAll(): Promise<any> {
-    return this.servicesService.findAll();
+    return this.servicesNewService.findAll();
   }
 
   @Get(':selectedService')
   async getOne(@Param('selectedService') selectedService: string): Promise<any> {
-    return this.servicesService.findServicePage(selectedService);
+    return this.servicesNewService.findServicePage(selectedService);
   }
 }

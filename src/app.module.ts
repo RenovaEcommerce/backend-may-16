@@ -136,7 +136,7 @@ import { ServicesNewController } from './servicesNew/servicesNew.controller';
   ],
   providers: [
     ServicesController,
-    ServicesNewController,
+    ServicesNewService,
     ServicesService,
     ServicesNewService,
 
@@ -148,6 +148,7 @@ import { ServicesNewController } from './servicesNew/servicesNew.controller';
     MovingFormService,
   ],
   controllers: [
+    ServicesNewController,
     ServicesController,
     FormController,
     LocationController,
